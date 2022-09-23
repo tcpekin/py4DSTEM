@@ -1,6 +1,6 @@
 import h5py
 import py4DSTEM
-from py4DSTEM.process import amorph
+from py4DSTEM.process import amorphous
 import matplotlib
 from py4DSTEM.process.utils.elliptical_coords import *
 from py4DSTEM.process.calibration import ellipse
@@ -341,7 +341,7 @@ if run_data:
     # mask_array = py4DSTEM.file.datastructure.DataCube(mask_array)
     np.seterr(all="ignore")
     print("running whole fit")
-    coef_array = amorph.strain.fit_stack(data, p_init, ri, ro, mask_array.data)
+    coef_array = amorphous.strain.fit_stack(data, p_init, ri, ro, mask_array.data)
 
 if analyze_data:
     # coef_array = py4DSTEM.file.io.read(
@@ -371,7 +371,7 @@ if analyze_data:
 
     # mask of regions that are crystalline
     # strains = amorph.calculate_coef_strain(coef_array, r_ref=radius_ref, A_ref=np.median(coef_array[:,:,9]), B_ref=np.median(coef_array[:,:,10]), C_ref=np.median(coef_array[:,:,11]))
-    strains = amorph.strain.calculate_coef_strain(coef_array, r_ref=radius_ref)
+    strains = amorphous.strain.calculate_coef_strain(coef_array, r_ref=radius_ref)
 
     print(f"reference radius = {radius_ref}")
     print(
