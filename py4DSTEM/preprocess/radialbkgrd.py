@@ -5,7 +5,7 @@ Functions for generating radially averaged backgrounds
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.signal import savgol_filter
-from py4DSTEM.process.utils import cartesian_to_polarelliptical_transform
+from py4DSTEM.process.utils import cartesian_to_polar_elliptical_transform
 
 ## Create look up table for background subtraction
 def get_1D_polar_background(data,
@@ -59,7 +59,7 @@ def get_1D_polar_background(data,
         p_ellipse = tuple[center[0],center[1],p_ellipse[2],p_ellipse[3],p_ellipse[4]]
 
     # Compute Polar Transform
-    polarData, rr, tt = cartesian_to_polarelliptical_transform(data,p_ellipse)
+    polarData, rr, tt = cartesian_to_polar_elliptical_transform(data,p_ellipse)
 
     # Crop polar data to maximum distance which contains information from original image
     if (polarData.mask.sum(axis = (0))==polarData.shape[0]).any():

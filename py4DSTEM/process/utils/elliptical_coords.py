@@ -99,7 +99,7 @@ def convert_ellipse_params_r(a,b,theta):
 
 ### Polar elliptical transformation
 
-def cartesian_to_polarelliptical_transform(
+def cartesian_to_polar_elliptical_transform(
     cartesianData,
     p_ellipse,
     dr=1,
@@ -266,7 +266,7 @@ def radial_elliptical_integral(
             )
         )
 
-    polarAr, rr, pp = cartesian_to_polarelliptical_transform(
+    polarAr, rr, pp = cartesian_to_polar_elliptical_transform(
         ar, p_ellipse=p_ellipse, dr=dr, dphi=np.radians(2), r_range=rmax
     )
     radial_integral = np.sum(polarAr, axis=0)
