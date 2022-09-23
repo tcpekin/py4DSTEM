@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 from mpl_toolkits.axes_grid1 import make_axes_locatable
@@ -103,6 +104,7 @@ def show_amorphous_ring_fit(dp,fitradii,p_dsg,N=12,cmap=('gray','gray'),
     theta = np.arctan2(qy,qx)
 
     # mask off center peak if maskcenter is true
+    dp = deepcopy(dp)
     if maskcenter is True:
         dp[q<qmin] = np.mean(dp[q>qmin])
 
@@ -118,16 +120,16 @@ def show_amorphous_ring_fit(dp,fitradii,p_dsg,N=12,cmap=('gray','gray'),
     for i in range(N):
         pinwheel += (theta>thetas[2*i]) * (theta<=thetas[2*i+1])
     mask = pinwheel * (q>qmin) * (q<=qmax)
-
+    mask = mask.astype(bool)
 
     # Get fit data
     fit = double_sided_gaussian(p_dsg, qxx, qyy)
-
+    
     # Show
     (fig,ax),(vmin,vmax) = show(dp,scaling=scaling,cmap=cmap_data,
                   mask=np.logical_not(mask),mask_color='empty',
-                  returnfig=True,returnclipvals=True,**kwargs)
-    show(fit,scaling=scaling,figax=(fig,ax),clipvals='manual',min=vmin,max=vmax,
+                  returnfig=True,return_intensity_range=True,**kwargs)
+    show(fit,scaling=scaling,figax=(fig,ax),intensity_range='absolute',vmin=vmin,vmax=vmax,
          cmap=cmap_fit,mask=mask,mask_color='empty',**kwargs)
     if fitborder:
         if N%2==1: thetas += (thetas[1]-thetas[0])/2

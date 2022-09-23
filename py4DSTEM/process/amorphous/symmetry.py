@@ -50,15 +50,15 @@ def compute_FEM(data, method, mask=None):
     implementing the four variance measurements from http://dx.doi.org/10.1016/j.ultramic.2010.05.010 Nanobeam diffraction fluctuation electron microscopy technique for structural characterization of disordered materials-Application to Al88-xY7Fe5Tix metallic glasses. Adapted from my Matlab code, but to only run on one dataset at a time.
 
     Inputs:
-    data    - polar-transformed stacks (py4DSTEM dataobject). the shape is (R_Nx, R_Ny, theta, r)
+    data    - polar-transformed stacks (numpy array). the shape is (R_Nx, R_Ny, theta, r)
     method  - integer, 0-3 corresponding to the four methods of computing FEM variance. 0 is the variance of annular mean, 1 is mean of ring variances, 2 is ring ensemble variance, and 3 is the annular mean of the variance
     mask    - real space mask that says which patterns to include
     """
 
     if mask is None:
-        mask = np.ones(data.data.shape[0:2], dtype=bool)
+        mask = np.ones(data.shape[0:2], dtype=bool)
 
-    data = data.data[mask, :, :]  # this turns the data from 4D to 3D
+    data = data[mask, :, :]  # this turns the data from 4D to 3D
 
     if method == 0:
         # this is variance of the annular mean
