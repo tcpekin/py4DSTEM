@@ -1,7 +1,7 @@
 # bring in corr2d, compute nn, nn_sum
 import numpy as np
 import matplotlib.pyplot as plt
-from tqdm import tqdm
+from py4DSTEM.process.utils import tqdmnd
 
 
 def corr2d(im1, im2, mask=None):
@@ -31,50 +31,49 @@ def compute_nn_corr(datacube, mask=None):
     corr_result = np.empty(datacube.shape[0:2])
     corr_result = corr_result[1:-1, 1:-1]
 
-    for i in tqdm(range(corr_result.shape[0])):
-        for j in range(corr_result.shape[1]):
-            corr_result[i, j] = np.mean(
-                [
-                    corr2d(
-                        datacube[i + 1, j + 1, :, :], datacube[i, j, :, :], mask=mask
-                    ),
-                    corr2d(
-                        datacube[i + 1, j + 1, :, :],
-                        datacube[i, j + 1, :, :],
-                        mask=mask,
-                    ),
-                    corr2d(
-                        datacube[i + 1, j + 1, :, :],
-                        datacube[i, j + 2, :, :],
-                        mask=mask,
-                    ),
-                    corr2d(
-                        datacube[i + 1, j + 1, :, :],
-                        datacube[i + 1, j, :, :],
-                        mask=mask,
-                    ),
-                    corr2d(
-                        datacube[i + 1, j + 1, :, :],
-                        datacube[i + 1, j + 2, :, :],
-                        mask=mask,
-                    ),
-                    corr2d(
-                        datacube[i + 1, j + 1, :, :],
-                        datacube[i + 2, j, :, :],
-                        mask=mask,
-                    ),
-                    corr2d(
-                        datacube[i + 1, j + 1, :, :],
-                        datacube[i + 2, j + 1, :, :],
-                        mask=mask,
-                    ),
-                    corr2d(
-                        datacube[i + 1, j + 1, :, :],
-                        datacube[i + 2, j + 2, :, :],
-                        mask=mask,
-                    ),
-                ]
-            )
+    for i, j in tqdmnd(corr_result.shape[0], corr_result.shape[1]):
+        corr_result[i, j] = np.mean(
+            [
+                corr2d(
+                    datacube[i + 1, j + 1, :, :], datacube[i, j, :, :], mask=mask
+                ),
+                corr2d(
+                    datacube[i + 1, j + 1, :, :],
+                    datacube[i, j + 1, :, :],
+                    mask=mask,
+                ),
+                corr2d(
+                    datacube[i + 1, j + 1, :, :],
+                    datacube[i, j + 2, :, :],
+                    mask=mask,
+                ),
+                corr2d(
+                    datacube[i + 1, j + 1, :, :],
+                    datacube[i + 1, j, :, :],
+                    mask=mask,
+                ),
+                corr2d(
+                    datacube[i + 1, j + 1, :, :],
+                    datacube[i + 1, j + 2, :, :],
+                    mask=mask,
+                ),
+                corr2d(
+                    datacube[i + 1, j + 1, :, :],
+                    datacube[i + 2, j, :, :],
+                    mask=mask,
+                ),
+                corr2d(
+                    datacube[i + 1, j + 1, :, :],
+                    datacube[i + 2, j + 1, :, :],
+                    mask=mask,
+                ),
+                corr2d(
+                    datacube[i + 1, j + 1, :, :],
+                    datacube[i + 2, j + 2, :, :],
+                    mask=mask,
+                ),
+            ]
+        )
 
     return corr_result
 

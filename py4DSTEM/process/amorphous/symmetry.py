@@ -1,7 +1,7 @@
 # move compute fem, symmetry functions here
 import numpy as np
 import matplotlib.pyplot as plt
-from tqdm import tqdm
+from py4DSTEM.utils import tqdmnd
 
 
 def compute_polar_symmetries(dp):
@@ -29,18 +29,17 @@ def compute_polar_stack_symmetries(datacube_polar):
     This function will take in a datacube of polar-transformed diffraction patterns, and do the autocorrelation, before taking the fourier transform along the theta direction, such that symmetries can be measured. They will be plotted by a different function
 
     Accepts:
-        datacube_polar  - diffraction pattern cube that has been polar transformed
+        datacube_polar  - diffraction pattern cube that has been polar transformed. A numpy array
 
     Returns:
         datacube_symmetries - the normalized fft along the theta direction of the autocorrelated patterns in datacube_polar
     """
-    datacube_symmetries = np.empty_like(datacube_polar.data)
+    datacube_symmetries = np.empty_like(datacube_polar)
 
-    for i in tqdm(range(datacube_polar.R_Nx)):
-        for j in range(datacube_polar.R_Ny):
-            datacube_symmetries[i, j, :, :] = compute_polar_symmetries(
-                datacube_polar.data[i, j, :, :]
-            )
+    for i, j in tqdmnd(datacube_polar.shape[0], datacube_polar.shape[1]):
+        datacube_symmetries[i, j, :, :] = compute_polar_symmetries(
+            datacube_polar[i, j, :, :]
+        )
 
     return datacube_symmetries
 
